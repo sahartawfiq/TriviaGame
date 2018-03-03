@@ -43,12 +43,12 @@ window.onload = (function (){
 // Array of objects holding the questions, choices and the correct answer
  	var questions = [
      {
-        "question": "How big is the sun?",
+        "question": "What is the name of the original novel that inspired the full length feature animation: The Hunchback of Notre Dame?",
         "choices": ["Notre Dame", "Notre Dame de Paris", "Beauty and the Beast "],
         "ans": 1
      },
     {
-        "question": "How long would it take a space shuttle (going 5 miles per second) to travel a light year?",
+        "question": "In The Sword in the Stone, what does Merlin call The Greatest Force on Earth?",
         "choices": ["Love", "Wealth", "Evil Spirit"],
         "ans": 0
         },
@@ -88,19 +88,21 @@ window.onload = (function (){
          "ans": 2
      },
    ];
-   	var questionNo = 0;
-    function displayQuestion(que) {
+   	// var questionNo = 0;
+    function displayQuestion(questionNo) {
 
         if (questionNo < questions.length) {
-            $("#questions").remove();
-            $(".option").remove();
+            $("#questions").empty();
+            $(".option").empty();
             timer.count();
             var newDivOne = $("<div>");
-            newDivOne.addClass("queArea").text(questions[que].question);
+            newDivOne.addClass("queArea").text(questions[questionNo].question);
+            console.log(questions[questionNo].question);
+
             $("#questions").append(newDivOne);
-            for (var i = 0; i < questions[que].choices.length; i++) {
+            for (var i = 0; i < questions[questionNo].choices.length; i++) {
                 var newDiv = $("<div>");
-                newDiv.addClass("option").attr("value", i).text(questions[que].choices[i]);
+                newDiv.addClass("option").attr("value", i).text(questions[questionNo].choices[i]);
                 $("#options").append(newDiv);
             }
 
