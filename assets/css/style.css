@@ -7,7 +7,8 @@ h1{
 	text-align: center;
 	align-content: center;
 }
-#start-buttom{
+/*#reStart-button,
+*/#start-buttom{
 	align-self: center;
 }
 body{
@@ -15,7 +16,7 @@ body{
 	width: 100%;
 }
 h1{
-	margin-bottom: 100px;
+	margin-bottom: 30px;
 	margin-top: 20px;
 	font-size: 50px;
 }
@@ -24,23 +25,55 @@ h1{
 	font-size: 36px;
 	font-weight: bolder;
 }
-.option{
-	width: 500px;
-	height: 60px;
-	font-size: 30px;
-	border: solid;
-	border-width: 7px;
-	border-color: purple;
-	margin-left: : 700px;
-	margin-right: 100px;
-	margin-top: 30px;
-	text-align: center;
-}
-#options{
-padding-left: 300px;	
-}
+
 #questions{
-	font-size: 30px;
+	font-size: 18px;
 	text-align: center;
+	font-weight: bold;
 
 }
+.radioButton{
+	width: 250px;
+	height: 15px;
+	margin: 0 auto;
+	display: inline-block;
+	text-align: center;
+	font-size: 16px;
+	
+}
+
+.questionLine{
+	height: 70px;
+	width: 100%;
+	text-align: center;
+	font-weight: bolder;
+	padding: 10;
+	font-size: 20px;
+	
+
+}
+.holder{
+	align-content: center;
+	text-align: center;
+}
+#result{
+	text-align: center;
+}
+/*#reStart-button{
+	align-content: center;
+}*/
+#submit{
+	width: 200px;
+	height: 50px;
+	margin-left: 450px;
+}
+
+
+
+
+
+
+
+
+
+    

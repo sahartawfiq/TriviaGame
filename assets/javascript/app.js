@@ -1,15 +1,17 @@
 window.onload = (function (){
+
 	$("#quizSection").hide();
 	$("#result").hide();
 
 	$("#start-button").on("click", function() {
-	// console.log("hello");
-		$("#start-area").fadeOut();
-		$("#quizSection").show();
-		$("#timerId").text("01:00");
-		$("#timerId").append("<h2>Time Left!</h2>");
-		timer.timerStart();
-		start();
+
+	   $("#start-area").fadeOut();
+	   $("#quizSection").show();
+	   $("#timerId").text("01:00");
+	   $("#timerId").append("<h2>Time Left!</h2>");
+	   timer.timerStart();
+	   quiz();
+       selectAnswer();
 	})
 	var noOfCorrect = 0;
 	var noOfIncorrect = 0;
@@ -32,11 +34,11 @@ window.onload = (function (){
     		$("#timerId").text("00:" + timer.time);
     		if (timer.time == 0) {
     			timer.stop();
+                result();
    			 }
   		},
    		reset: function() {
     		timer.time = 59;
-    // timer.lap = 1;
     		$("#timerId").text("01:00"); 
   		},
 	};
@@ -69,12 +71,12 @@ window.onload = (function (){
      },
      {
          "question": "In Beauty and the Beast, how many eggs does Gaston eat for breakfast?",
-         "choices": ["2 dozons", "5 dozens", "5 eggs"],
+         "choices": ["two dozons", "five dozens", "five eggs"],
          "ans": 1
      },
      {
          "question": "What time does the royal ball start in Cinderella?",
-         "choices": ["9 pm", "8 pm", "12 am"],
+         "choices": ["nine pm", "eight pm", "twelve am"],
          "ans": 1
      },
      {
@@ -88,72 +90,92 @@ window.onload = (function (){
          "ans": 2
      },
    ];
-   	// var questionNo = 0;
-    function displayQuestion(questionNo) {
-
-        if (questionNo < questions.length) {
-            $("#questions").empty();
-            $(".option").empty();
-            timer.count();
-            var newDivOne = $("<div>");
-            newDivOne.addClass("queArea").text(questions[questionNo].question);
-            console.log(questions[questionNo].question);
-
-            $("#questions").append(newDivOne);
-            for (var i = 0; i < questions[questionNo].choices.length; i++) {
-                var newDiv = $("<div>");
-                newDiv.addClass("option").attr("value", i).text(questions[questionNo].choices[i]);
-                $("#options").append(newDiv);
-            }
-
-        } else {
-            reset(); 
+   // a function to display the questions and choices radio buttond
+   function quiz(){
+    if (timer.time===0) {
+            timer.stop();
+            timer.reset();
+            result();
+    }
+    //create an array of forms for the questions and an array of buttons for the choices
+    var button = [];
+    var createForm = [];
+    for (var i = 0; i < questions.length; i++) {
+        createForm[i] = $("<form>");
+        createForm[i].text(questions[i].question);
+        createForm[i].addClass("questionLine")
+        // console.log("i" + i);
+        if (i===0) {
+            $("#questionsArea").after(createForm[i]);
+        }else {
+            createForm[i-1].after(createForm[i]);
+        }
+        
+        var n = i.toString();
+        // console.log(n);
+        var buttonHolder = []; 
+        buttonHolder[i]= $("<div>");
+        buttonHolder[i].addClass("holder");
+        buttonHolder[i].text(i+1);
+        
+        for (var j = 0; j < questions[i].choices.length; j++) {
+            
+            button[j] = $("<input type='radio' name=n>");
+            button[j].text (questions[i].choices[j]);
+            button[j].addClass("radioButton");
+            button[j].val(j);
+            buttonHolder[i].append(button[j]);
+            createForm[i].append(buttonHolder[i]); 
         }
     }
+}
+  
         function selectAnswer(){
-        $(".option").on("click", function() {
-            var userChoice = $(this).attr("value"); 
-            userChoice = parseInt(userChoice);
+            $("#submit").on("click", function(){
+            result();
+            return;
 
+            });
+            $(".radioButton").on("click", function() {
+                var userChoice = $(this).attr("value"); 
+                console.log(userChoice);
+                userChoice = parseInt(userChoice);
+                x = $(this).parent();
+                var number = x.text();
+                number = parseInt(number);
+                var questionNo = number -1;
+                console.log("question no" + questionNo);
+                // console.log(questions[questionNo].ans);
             // Is it the correct answer?
-            if (userChoice === questions[questionNo].ans) {
-                noOfCorrect++;
-                questionNo++;
-                
-            } else {
-                noOfIncorrect++;
-                questionNo++;
+                if (userChoice === questions[questionNo].ans) {
+                    noOfCorrect++;
+                    console.log(noOfCorrect);    
+                } else {
+                    noOfIncorrect++;
+                }
 
-            }
-            displayQuestion(questionNo);
-        })
-    }
-    function start() {
-        $("quizSection").show();
-        $("#questions").show();
-        $("#options").show();
-        $("#timerId").show();
-// Initialize counters
-        var noOfCorrect = 0;
-		var noOfIncorrect = 0;
-		var noOfUnAnswered = 0;
-        questionNo = 0;
-// Start displaying 
-        displayQuestion(questionNo);
-
-    }
-     function reset() {
-     	$("#start-area");
-        $("#result").show();
-        $("#quizSection").hide();
+            });
+        }
+        //function to display the results
+     function result() {
+     	$("#start-area").hide();
+        $("#result").fadeIn();
+        $("#quizSection").fadeOut();
         $("#options").hide();
-        $("#timerId").hide()
-        noOfUnAnswered = 9 - (noOfCorrect + noOfIncorrect);
+        $("#timerId").hide();
+        noOfUnAnswered = questions.length - (noOfCorrect + noOfIncorrect);
         $("#result").append("<h4>Total Correct Answers: " + noOfCorrect + "</h4>");
         $("#result").append("<h4>Total Incorrect Answers: " + noOfIncorrect + "</h4>");
         $("#result").append("<h4>Total Unanswered: " + noOfUnAnswered + "</h4>");
-// Restart the game in ten seconds
-        setTimeout(start, 1000 * 10);
-
+    }  
+       
+    function reset(){
+        $("#quizSection").hide();
+        $("#result-area").hide();
+        $("#start-area").fadeIn();
+        $("#questionsArea").empty();
+        $("#result").empty();
+        $("#reStart-button").hide();   
     }
+    
  });
